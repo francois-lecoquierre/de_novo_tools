@@ -70,7 +70,7 @@ variants_by_sample = get_variants_by_sample(lines, samples)
 # append dist_to_closest_variant_in_samples to each variant
 for sample in samples:
     for variant in variants_by_sample[sample]:
-        variant['dist_to_closest_variant_in_samples'] = 0
+        variant['dist_to_closest_variant_in_samples'] = -1
         variant['oter_sample'] = ''
         variant['other_variant'] = ''
         for other_sample in samples:
@@ -78,16 +78,14 @@ for sample in samples:
                 for other_variant in variants_by_sample[other_sample]:
                     if other_variant['chr'] == variant['chr']:
                         dist = abs(int(variant['pos']) - int(other_variant['pos']))
-                        if variant['dist_to_closest_variant_in_samples'] == 0 or dist < variant['dist_to_closest_variant_in_samples']:
+                        if variant['dist_to_closest_variant_in_samples'] == -1 or dist < variant['dist_to_closest_variant_in_samples']:
                             variant['dist_to_closest_variant_in_samples'] = dist
                             variant['other_sample'] = other_sample
                             variant['other_variant'] = other_variant['ID']
-        # if there is no other variant on the same chromosome, set dist to -1
-        if variant['dist_to_closest_variant_in_samples'] == 0:
-            variant['dist_to_closest_variant_in_samples'] = -1
+
 
 # save results in output folder
-output_file = output + vcf.split('/')[-1].replace('.vcf', '_DNM_distance_between_samples.txt')
+output_file = output + "/" + vcf.split('/')[-1].replace('.vcf', '_DNM_distance_between_samples.txt')
 with open(output_file, 'w') as f:
     # header
     f.write('sample\tchr\tpos\tref\talt\tID\ttype\tdist_to_closest_variant_in_samples\tother_sample\tother_variant\n')
