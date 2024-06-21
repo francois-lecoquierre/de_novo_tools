@@ -1,6 +1,6 @@
 # de novo tools
 
-Scripts dedicated for de novo short variants (SNVs & indels)
+Scripts dedicated to de novo short variants (SNVs & indels)
 
 ## DeNovoMiner.py
 This script runs simple bcftools filtration steps to identify de novo variant candidates from a multi-sample vcf including child-father-mother trios.
